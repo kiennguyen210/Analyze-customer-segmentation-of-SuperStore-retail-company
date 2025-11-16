@@ -1,9 +1,28 @@
 # Customer Segmentation For Marketing Campaigns in SuperStore (Global Retail Company) | Python
+<img width="900" height="600" alt="Image" src="https://github.com/user-attachments/assets/f26fd9d1-2d88-4dec-a650-d558bae94f47" />
+
 *Applying the RFM model built with Python to segment customers and recommend appropriate marketing campaigns.*
 
-Author: Nguyễn Duy Kiên
+**Author:** Nguyễn Duy Kiên
 
-Date: October 2025
+**Date:** October 2025
 
-Tools Used: Python
+**Tools Used:** Python
 
+---
+
+## 📑 Table of Contents  
+1. [📌 Background & Overview](#-background--overview)  
+2. [📂 Dataset Description & Data Structure](#-dataset-description--data-structure)
+3. [🔍 Exploratory Data Analysis (EDA)]
+4. [🧮 Data Processing]
+5. [📊 Visulization & Analysis]
+6. [🔎 Insights & Recommendations](#-final-conclusion--recommendations)
+
+---
+
+# 1. 📌 Background & Overview
+
+# 2. 📂 Dataset Description & Data Structure
+
+# 3. 🔍 Exploratory Data Analysis (EDA)
