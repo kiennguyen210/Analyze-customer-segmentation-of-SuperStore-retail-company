@@ -206,7 +206,6 @@ print(df.describe())
 #### c. Using ProfileReport to Understand more about Category Data Type
 
 ```python
-# @title c. Using ProfileReport to Understand more about Category Data Type
 profile = ProfileReport(df)
 profile
 ```
