@@ -760,124 +760,87 @@ Defination:
 
 ### 5.2. Royal & Non royal
 
-#### a. Visualize Customer Allocation by Loyal Status and Average Purchase Amount Thresholds
-
 ```python
-# Calculate loyal_customer_volume and non_loyal_customer_volume
+# 1. Calculate loyal and non-loyal customer volumes once
 loyal_customer_volume = RFM_df_final[RFM_df_final['loyal_status'] == 'Loyal']['CustomerID'].nunique()
 non_loyal_customer_volume = RFM_df_final[RFM_df_final['loyal_status'] == 'Non Loyal']['CustomerID'].nunique()
 
-# Group by Quantity_average_bin and count CustomerID
-df = RFM_df_final[['CustomerID', 'Quantity_average_bin', 'loyal_status']].groupby(['Quantity_average_bin', 'loyal_status']).count().reset_index().rename(columns={'CustomerID': 'Customer_volume'})
+# 2. Define a helper function to prepare the Pivot data
+def prepare_stacked_bar_data(df, bin_column, loyal_vol, non_loyal_vol):
+    """Prepares the pivot table for a 100% stacked bar chart."""
 
-# Calculate Customer_percent
-df['Customer_percent'] = df.apply(
-    lambda x: (x.Customer_volume / loyal_customer_volume) * 100 if x.loyal_status == 'Loyal' else (x.Customer_volume / non_loyal_customer_volume) * 100,
-    axis=1
+    # Group by bin_column and loyal_status and count CustomerID
+    df_grouped = df[['CustomerID', bin_column, 'loyal_status']].groupby([bin_column, 'loyal_status']).count().reset_index().rename(columns={'CustomerID': 'Customer_volume'})
+
+    # Calculate Customer_percent based on loyal status volume
+    df_grouped['Customer_percent'] = df_grouped.apply(
+        lambda x: (x.Customer_volume / loyal_vol) * 100 if x.loyal_status == 'Loyal' else (x.Customer_volume / non_loyal_vol) * 100,
+        axis=1
+    )
+
+    # Create the pivot table
+    df_pivot = df_grouped.pivot(index='loyal_status', values='Customer_percent', columns=bin_column)
+
+    return df_pivot
+
+# 3. Prepare data for all four visuals
+df_pivot_1 = prepare_stacked_bar_data(RFM_df_final, 'Quantity_average_bin', loyal_customer_volume, non_loyal_customer_volume)
+df_pivot_2 = prepare_stacked_bar_data(RFM_df_final, 'Cost_average_bin', loyal_customer_volume, non_loyal_customer_volume)
+df_pivot_3 = prepare_stacked_bar_data(RFM_df_final, 'First Quantity bin', loyal_customer_volume, non_loyal_customer_volume)
+df_pivot_4 = prepare_stacked_bar_data(RFM_df_final, 'First cost bin', loyal_customer_volume, non_loyal_customer_volume)
+
+# 4. Create the Figure with a 2x2 Subplot grid
+fig, axes = plt.subplots(2, 2, figsize=(18, 14)) # Use a larger figsize for better readability
+plt.suptitle('Customer Distribution by Loyal Status and Different Thresholds', fontsize=18, y=1.02)
+
+# --- Visual 1: Quantity_average_bin (axes[0, 0]) ---
+df_pivot_1.plot(
+    kind='bar', stacked=True, ax=axes[0, 0],
+    title='1. Average Purchase Quantity Thresholds'
 )
+axes[0, 0].set_ylabel('Percentage of Loyal Status Customers')
+axes[0, 0].set_xlabel('Loyal Status')
+axes[0, 0].legend(title='Avg Qty Bin', loc='upper left')
+axes[0, 0].tick_params(axis='x', rotation=0)
 
-# Drop Customer_volume column
-df = df.drop(columns=['Customer_volume'])
+# --- Visual 2: Cost_average_bin (axes[0, 1]) ---
+df_pivot_2.plot(
+    kind='bar', stacked=True, ax=axes[0, 1],
+    title='2. Average Purchase Price Thresholds'
+)
+axes[0, 1].set_ylabel('Percentage of Loyal Status Customers')
+axes[0, 1].set_xlabel('Loyal Status')
+axes[0, 1].legend(title='Avg Cost Bin', loc='upper left')
+axes[0, 1].tick_params(axis='x', rotation=0)
 
-# Pivot table to prepare for plotting
-df_pivot = df.pivot(index='loyal_status', values='Customer_percent', columns='Quantity_average_bin')
+# --- Visual 3: First Quantity bin (axes[1, 0]) ---
+df_pivot_3.plot(
+    kind='bar', stacked=True, ax=axes[1, 0],
+    title='3. First Purchase Quantity Bin'
+)
+axes[1, 0].set_ylabel('Percentage of Loyal Status Customers')
+axes[1, 0].set_xlabel('Loyal Status')
+axes[1, 0].legend(title='First Qty Bin', loc='upper left')
+axes[1, 0].tick_params(axis='x', rotation=0)
 
-# Plot the 100% stacked bar chart
-df_pivot.plot(kind='bar', stacked=True, figsize=(10, 6), title = 'Stacked Bar chart showing Customer Distribution by Loyal Status and Average Purchase Amount Thresholds')
+# --- Visual 4: First cost bin (axes[1, 1]) ---
+df_pivot_4.plot(
+    kind='bar', stacked=True, ax=axes[1, 1],
+    title='4. First Purchase Cost Bin'
+)
+axes[1, 1].set_ylabel('Percentage of Loyal Status Customers')
+axes[1, 1].set_xlabel('Loyal Status')
+axes[1, 1].legend(title='First Cost Bin', loc='upper left')
+axes[1, 1].tick_params(axis='x', rotation=0)
+
+# 5. Final adjustments and saving the figure
+plt.tight_layout(rect=[0, 0.03, 1, 0.98]) # Adjust layout to make room for suptitle
+plt.savefig('combined_customer_allocation_visual.png')
+plt.show() # Use plt.show() if running in an interactive environment
 ```
 
-<img width="920" height="602" alt="image" src="https://github.com/user-attachments/assets/de2157ac-605e-4bf1-81e9-a36cbc098680" />
+<img width="1790" height="1391" alt="image" src="https://github.com/user-attachments/assets/8bd81518-995b-44af-95d9-4f683d3a4389" />
 
-Defination:
-
-- Quantity_average_bin: average purchase threshold
-- Example: q1 < 6 -> Average customer group buys less than 6 products per order
-
-#### b. Visualize Customer Allocation by Loyal Status and Average Purchase Price Thresholds
-
-```python
-# Ensure loyal_customer_volume and non_loyal_customer_volume are calculated
-loyal_customer_volume = RFM_df_final[RFM_df_final['loyal_status'] == 'Loyal']['CustomerID'].nunique()
-non_loyal_customer_volume = RFM_df_final[RFM_df_final['loyal_status'] == 'Non Loyal']['CustomerID'].nunique()
-
-# Group by Quantity_average_bin and count CustomerID
-df = RFM_df_final[['CustomerID', 'Cost_average_bin', 'loyal_status']].groupby(['Cost_average_bin', 'loyal_status']).count().reset_index().rename(columns={'CustomerID': 'Customer_volume'})
-
-# Calculate Customer_percent
-df['Customer_percent'] = df.apply(
-    lambda x: (x.Customer_volume / loyal_customer_volume) * 100 if x.loyal_status == 'Loyal' else (x.Customer_volume / non_loyal_customer_volume) * 100,
-    axis=1
-)
-
-# Drop Customer_volume column
-df = df.drop(columns=['Customer_volume'])
-
-# Pivot table to prepare for plotting
-df_pivot = df.pivot(index='loyal_status', values='Customer_percent', columns='Cost_average_bin')
-
-# Plot the 100% stacked bar chart
-df_pivot.plot(kind='bar', stacked=True, figsize=(10, 6), title = 'Stacked Bar chart showing Customer Distribution by Loyal Status and Average Purchase Price Thresholds')
-```
-
-<img width="895" height="602" alt="image" src="https://github.com/user-attachments/assets/1b223d4f-bf43-4817-b5e9-47a1774e6079" />
-
-Definition:
-- Cost_average_bin: average value of each order
-- Example: q1 < 12 -> Group of customers who pay less than $12 per order
-
-#### c. Visualize Customer Allocation by Loyal Status and First Quantity
-
-```python
-# Group by First Quantity bin and count CustomerID
-df_first_qty = RFM_df_final[['CustomerID', 'First Quantity bin', 'loyal_status']] \
-    .groupby(['First Quantity bin', 'loyal_status']).count().reset_index().rename(columns={'CustomerID': 'Customer_volume'})
-
-# Calculate Customer_percent
-df_first_qty['Customer_percent'] = df_first_qty.apply(
-    lambda x: (x.Customer_volume / loyal_customer_volume) * 100 if x.loyal_status == 'Loyal' 
-              else (x.Customer_volume / non_loyal_customer_volume) * 100,
-    axis=1
-)
-
-# Drop Customer_volume column
-df_first_qty = df_first_qty.drop(columns=['Customer_volume'])
-
-# Pivot table
-df_pivot_first_qty = df_first_qty.pivot(index='loyal_status', values='Customer_percent', columns='First Quantity bin')
-
-# Plot
-df_pivot_first_qty.plot(kind='bar', stacked=True, figsize=(10,6),
-                        title='Stacked Bar chart Customer Distribution by Loyal Status and First Quantity')
-```
-
-<img width="831" height="602" alt="image" src="https://github.com/user-attachments/assets/9fb3a600-1058-4eee-8c0a-8e156911aa9b" />
-
-#### d. Visualize Customer Allocation by Loyal Status and First Cost
-
-```python
-# Group by First Cost bin and count CustomerID
-df_first_cost = RFM_df_final[['CustomerID', 'First cost bin', 'loyal_status']] \
-    .groupby(['First cost bin', 'loyal_status']).count().reset_index().rename(columns={'CustomerID': 'Customer_volume'})
-
-# Calculate Customer_percent
-df_first_cost['Customer_percent'] = df_first_cost.apply(
-    lambda x: (x.Customer_volume / loyal_customer_volume) * 100 if x.loyal_status == 'Loyal' 
-              else (x.Customer_volume / non_loyal_customer_volume) * 100,
-    axis=1
-)
-
-# Drop Customer_volume column
-df_first_cost = df_first_cost.drop(columns=['Customer_volume'])
-
-# Pivot table
-df_pivot_first_cost = df_first_cost.pivot(index='loyal_status', values='Customer_percent', columns='First cost bin')
-
-# Plot
-df_pivot_first_cost.plot(kind='bar', stacked=True, figsize=(10,6),
-                         title='Stacked Bar chart Customer Distribution by Loyal Status and First Cost')
-```
-
-<img width="831" height="602" alt="image" src="https://github.com/user-attachments/assets/2027ae6e-07e5-4c61-b991-8b68c39cc9ab" />
 
 ## 6. 🔎 Insights & Recommendations
 ### 6.1. RFM Model
