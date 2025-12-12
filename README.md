@@ -157,6 +157,8 @@ The dataset consists of two tables (sheets):
 
 </details>
 
+---
+
 ## 3. 🔍 Exploratory Data Analysis (EDA)
 
 ### 3.1. Understand Data
@@ -534,6 +536,8 @@ df_drop_duplications.head()
 | 3 | 536365    | 84029G    | KNITTED UNION FLAG HOT WATER BOTTLE | 6        | 2010-12-01 08:26:00 | 3.39      | 17850.0    | United Kingdom | False        | 2010-12-01 | 2010-12 |
 | 4 | 536365    | 84029E    | RED WOOLLY HOTTIE WHITE HEART.      | 6        | 2010-12-01 08:26:00 | 3.39      | 17850.0    | United Kingdom | False        | 2010-12-01 | 2010-12 |
 
+---
+
 ## 4. 🧮 Data Processing
 
 ### 4.1. RFM Model
@@ -716,6 +720,8 @@ RFM_df_final.head()
 | 3 | 12349.0    | 18      | 73        | 1757.55  | 2011-11-21 | -18             | 2011-11-01  | 4 | 4 | 4 | ... | 444       | Loyal        | 8.643836         | 24.076027    | 2             | 15.0       | q2: 6 - 10           | q3: 18 - 25      | q1: < 3            | q2: 10 - 16    |
 | 4 | 12350.0    | 310     | 17        | 334.40   | 2011-02-02 | -310            | 2011-02-01  | 1 | 2 | 2 | ... | 122       | Non Loyal    | 11.588235        | 19.670588    | 12            | 25.2       | q3: 10 - 15          | q3: 18 - 25      | q3: 8 - 12         | q3: 16 - 26    |
 
+---
+
 ## 5. 📊 Visulization & Analysis
 
 ### 5.1. RFM Model
@@ -832,6 +838,7 @@ plt.show() # Use plt.show() if running in an interactive environment
 
 <img width="1790" height="1391" alt="image" src="https://github.com/user-attachments/assets/8bd81518-995b-44af-95d9-4f683d3a4389" />
 
+---
 
 ## 6. 🔎 Insights & Recommendations
 ### 6.1. RFM Model
