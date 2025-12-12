@@ -46,19 +46,27 @@ How can SuperStore use RFM segmentation to efficiently categorize customers and 
 
 💡 Business Questions this project answers
 
-- ✔️ How can SuperStore segment its entire customer base using RFM to support targeted marketing?
-- ✔️ Which customer groups have high value (loyal, big spenders) and which groups have churn risk?
-- ✔️ How should Marketing tailor campaigns for each segment to maximize retention, loyalty, and sales uplift?
-- ✔️ What is the current distribution of customer value across Recency, Frequency, and Monetary?
-- ✔️ Which RFM dimension is most critical for SuperStore’s retail business model?
+✔️ How can SuperStore segment its entire customer base using RFM to support targeted marketing?
+
+✔️ Which customer groups have high value (loyal, big spenders) and which groups have churn risk?
+
+✔️ How should Marketing tailor campaigns for each segment to maximize retention, loyalty, and sales uplift?
+
+✔️ What is the current distribution of customer value across Recency, Frequency, and Monetary?
+
+✔️ Which RFM dimension is most critical for SuperStore’s retail business model?
 
 ### 1.2. Who is this project for?  
 
-- ✔️ Marketing Department – to personalize campaigns, allocate budgets, and target high-value or at-risk customers.
-- ✔️ Sales Teams – to identify loyal customers and upsell/cross-sell opportunities.
-- ✔️ Customer Experience / CRM Teams – to tailor retention and reactivation programs.
-- ✔️ Data Analytics Department – to automate segmentation pipelines and maintain scalable customer analytics.
-- ✔️ Business Leaders / Executives – to understand customer value distribution and guide strategic planning.
+👤 Marketing Department – to personalize campaigns, allocate budgets, and target high-value or at-risk customers.
+
+👤 Sales Teams – to identify loyal customers and upsell/cross-sell opportunities.
+
+👤 Customer Experience / CRM Teams – to tailor retention and reactivation programs.
+
+👤 Data Analytics Department – to automate segmentation pipelines and maintain scalable customer analytics.
+
+👤 Business Leaders / Executives – to understand customer value distribution and guide strategic planning.
 
 ### 1.3. Why RFM? How to apply RFM?
 
